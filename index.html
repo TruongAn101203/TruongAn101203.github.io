@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp Mời Lễ Tốt Nghiệp - Lê Trương An</title>
+    <title>Thiệp Mời Tốt Nghiệp - Lê Trường An</title>
     <style>
-        /* ===== GIỮ NGUYÊN TOÀN BỘ CSS ===== */
         * {
             margin: 0;
             padding: 0;
@@ -14,316 +13,808 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f0c29;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            background: #000;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
         }
 
-        .particles {
+        /* Animated starfield background */
+        .starfield {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 215, 0, 0.6);
-            border-radius: 50%;
-            animation: float 15s infinite ease-in-out;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100vh) translateX(100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .invitation-container {
-            position: relative;
-            z-index: 1;
-            perspective: 1500px;
-        }
-
-        .invitation-card {
-            background: rgba(255, 255, 255, 0.95);
-            max-width: 700px;
-            width: 100%;
-            border-radius: 30px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            position: relative;
-            animation: cardEntrance 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform-style: preserve-3d;
-        }
-
-        @keyframes cardEntrance {
-            0% {
-                opacity: 0;
-                transform: rotateX(-20deg) translateY(50px) scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: rotateX(0deg) translateY(0) scale(1);
-            }
-        }
-
-        .golden-border {
-            position: absolute;
-            inset: 0;
-            border: 3px solid transparent;
-            border-radius: 30px;
-            background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #ffd700, #ffed4e, #ffd700) border-box;
-            pointer-events: none;
-            animation: borderGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
-
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
-            padding: 50px 30px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
         }
 
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
-            animation: twinkle 2s ease-in-out infinite;
+            animation: twinkleMove 20s linear infinite;
         }
 
-        @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.3;
-                transform: scale(1);
+        @keyframes twinkleMove {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(-10vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(0);
+            }
+        }
+
+        /* Fireworks effect */
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 2s ease-out infinite;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        /* Confetti effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--color);
+            animation: confettiFall 5s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .invitation-container {
+            position: relative;
+            z-index: 10;
+            perspective: 2000px;
+        }
+
+        .invitation-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,240,255,0.95) 100%);
+            max-width: 800px;
+            width: 100%;
+            border-radius: 40px;
+            box-shadow: 0 50px 100px rgba(255, 215, 0, 0.4),
+                        0 0 100px rgba(138, 43, 226, 0.3),
+                        inset 0 0 100px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+            animation: cardAppear 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+            border: 3px solid rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: rotateY(90deg) scale(0.5);
+                filter: blur(20px);
             }
             50% {
+                transform: rotateY(-10deg) scale(1.1);
+            }
+            100% {
                 opacity: 1;
-                transform: scale(1.5);
+                transform: rotateY(0deg) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Magical border effect */
+        .magic-border {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080);
+            background-size: 400% 400%;
+            border-radius: 40px;
+            z-index: -1;
+            animation: gradientShift 3s ease infinite;
+            filter: blur(10px);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        }
+
+        /* Animated gradient overlay */
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255, 255, 255, 0.1) 20px,
+                rgba(255, 255, 255, 0.1) 40px
+            );
+            animation: moveStripes 20s linear infinite;
+        }
+
+        @keyframes moveStripes {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(100px, 100px);
+            }
+        }
+
+        /* Floating particles in header */
+        .header::after {
+            content: '✨ 🎓 ✨ 🎊 ✨ 🎓 ✨ 🎊 ✨';
+            position: absolute;
+            width: 200%;
+            top: 50%;
+            left: -50%;
+            font-size: 30px;
+            opacity: 0.3;
+            animation: floatAcross 15s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes floatAcross {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(50%);
             }
         }
 
         .cap-icon {
-            font-size: 80px;
+            font-size: 100px;
             position: relative;
             z-index: 2;
-            animation: capFloat 3s ease-in-out infinite;
+            animation: cap3D 4s ease-in-out infinite;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+            transform-style: preserve-3d;
         }
 
-        @keyframes capFloat {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+        @keyframes cap3D {
+            0%, 100% {
+                transform: translateY(0) rotateY(0deg) rotateX(0deg);
+            }
+            25% {
+                transform: translateY(-30px) rotateY(180deg) rotateX(20deg);
+            }
+            50% {
+                transform: translateY(0) rotateY(360deg) rotateX(0deg);
+            }
+            75% {
+                transform: translateY(-30px) rotateY(540deg) rotateX(-20deg);
+            }
         }
 
         .header h1 {
             color: white;
-            font-size: 42px;
+            font-size: 52px;
             font-weight: 900;
-            margin: 20px 0 10px;
-            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                         0 0 40px rgba(255, 215, 0, 0.6),
+                         5px 5px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+            margin: 25px 0 15px;
+            letter-spacing: 3px;
+            animation: textPulse 3s ease-in-out infinite;
+            background: linear-gradient(45deg, #fff, #ffd700, #fff, #ffd700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes textPulse {
+            0%, 100% {
+                transform: scale(1);
+                background-position: 0% 50%;
+            }
+            50% {
+                transform: scale(1.05);
+                background-position: 100% 50%;
+            }
         }
 
         .subtitle {
             color: #ffd700;
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 26px;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 1),
+                         3px 3px 5px rgba(0, 0, 0, 0.5);
+            animation: rainbow 5s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { color: #ffd700; }
+            20% { color: #ff69b4; }
+            40% { color: #87ceeb; }
+            60% { color: #98fb98; }
+            80% { color: #ffa500; }
+            100% { color: #ffd700; }
         }
 
         .content {
-            padding: 50px 40px;
+            padding: 60px 50px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(248,249,255,0.9) 100%);
+            position: relative;
+        }
+
+        /* Floating shapes in background */
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: floatShape 20s ease-in-out infinite;
+        }
+
+        @keyframes floatShape {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(100px, -100px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-50px, 50px) rotate(240deg);
+            }
         }
 
         .greeting {
             text-align: center;
-            font-size: 26px;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            font-weight: 600;
+            font-size: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            font-weight: 700;
+            animation: slideDown 1.5s ease-out 1s both;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.8);
+            }
+            60% {
+                transform: translateY(10px) scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .graduate-name {
             text-align: center;
-            font-size: 48px;
-            margin-bottom: 40px;
+            font-size: 64px;
+            background: linear-gradient(135deg, #ff0080 0%, #ff8c00 25%, #40e0d0 50%, #ff8c00 75%, #ff0080 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 50px;
             font-weight: 900;
+            letter-spacing: 2px;
+            animation: nameGlow 3s ease-in-out infinite, gradientShift 5s ease infinite;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 30px rgba(255, 0, 128, 0.5);
+            filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.6));
+        }
+
+        @keyframes nameGlow {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.6));
+            }
+            50% {
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 40px rgba(255, 0, 128, 0.8))
+                        drop-shadow(0 0 60px rgba(64, 224, 208, 0.6));
+            }
         }
 
         .details {
-            border-radius: 20px;
-            padding: 35px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            border-radius: 30px;
+            padding: 45px;
+            margin-bottom: 35px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3),
+                        inset 0 0 30px rgba(255, 255, 255, 0.5);
+            animation: detailsAppear 1.5s ease-out 1.5s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes detailsAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) rotateX(-30deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+
+        /* Scanning light effect */
+        .details::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.5) 50%,
+                transparent 70%
+            );
+            animation: scan 4s ease-in-out infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translate(-100%, -100%);
+            }
+            50%, 100% {
+                transform: translate(100%, 100%);
+            }
         }
 
         .detail-item {
             display: flex;
-            margin-bottom: 25px;
-            font-size: 17px;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            font-size: 19px;
+            color: #222;
+            position: relative;
+            z-index: 1;
+            animation: itemPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+            padding: 15px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .detail-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(10px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .detail-item:nth-child(1) { animation-delay: 1.7s; }
+        .detail-item:nth-child(2) { animation-delay: 1.9s; }
+        .detail-item:nth-child(3) { animation-delay: 2.1s; }
+        .detail-item:nth-child(4) { animation-delay: 2.3s; }
+        .detail-item:nth-child(5) { animation-delay: 2.5s; }
+
+        @keyframes itemPop {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            70% {
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
         }
 
         .detail-icon {
-            font-size: 28px;
+            font-size: 36px;
             margin-right: 20px;
-            min-width: 35px;
+            min-width: 40px;
+            text-align: center;
+            animation: iconSpin 3s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes iconSpin {
+            0%, 100% {
+                transform: rotateY(0deg) scale(1);
+            }
+            50% {
+                transform: rotateY(360deg) scale(1.3);
+            }
+        }
+
+        .detail-text {
+            flex: 1;
+            line-height: 1.9;
         }
 
         .detail-label {
-            font-weight: 700;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .phone-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .phone-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .phone-link:hover::after {
+            width: 100%;
+        }
+
+        .phone-link:hover {
+            color: #764ba2;
+            transform: scale(1.05);
         }
 
         .map-button {
             display: inline-block;
-            padding: 14px 35px;
-            border-radius: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            margin-top: 12px;
+            font-weight: 800;
+            margin-top: 15px;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .map-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .map-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.7);
+            background-position: 100% 0;
+        }
+
+        .map-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .map-button span {
+            position: relative;
+            z-index: 1;
         }
 
         .footer {
             text-align: center;
-            padding: 40px;
-            font-size: 22px;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            font-size: 26px;
+            color: white;
             font-style: italic;
-            font-weight: 600;
+            font-weight: 700;
+            animation: footerReveal 1.5s ease-out 2.7s both;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 15%, 50% 0, 100% 15%, 100% 100%, 0 100%);
+        }
+
+        @keyframes footerReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animated hearts floating */
+        .footer::before {
+            content: '💙 💜 💙 💜 💙 💜 💙';
+            position: absolute;
+            width: 200%;
+            font-size: 40px;
+            animation: floatHearts 10s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(-50%) translateY(-30px);
+            }
+        }
+
+        .heart {
+            color: #ffd700;
+            animation: heartBeat 1s ease-in-out infinite;
+            display: inline-block;
+            font-size: 32px;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            10% {
+                transform: scale(1.4) rotate(-10deg);
+            }
+            20% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            30% {
+                transform: scale(1.4) rotate(-10deg);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .header h1 {
+                font-size: 36px;
+            }
+            .graduate-name {
+                font-size: 42px;
+            }
+            .greeting {
+                font-size: 24px;
+            }
+            .detail-item {
+                font-size: 16px;
+            }
+            .content {
+                padding: 40px 30px;
+            }
+            .cap-icon {
+                font-size: 70px;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="particles" id="particles"></div>
-
-<div class="invitation-container">
-    <div class="invitation-card">
-        <div class="golden-border"></div>
-
-        <div class="header">
-            <div class="stars" id="stars"></div>
-            <div class="cap-icon">🎓</div>
-            <h1>LỄ TỐT NGHIỆP</h1>
-            <div class="subtitle">✨ Trân trọng kính mời ✨</div>
-        </div>
-
-        <div class="content">
-            <div class="greeting">
-                Trân trọng mời bạn đến chung vui trong ngày tốt nghiệp của tôi
+    <div class="starfield" id="starfield"></div>
+    
+    <div class="invitation-container">
+        <div class="invitation-card">
+            <div class="magic-border"></div>
+            
+            <div class="header">
+                <div class="cap-icon">🎓</div>
+                <h1>LỄ TỐT NGHIỆP</h1>
+                <div class="subtitle">✨ Mời Bạn Tham Dự ✨</div>
             </div>
+            
+            <div class="content">
+                <div class="shape" style="top: 10%; left: 10%; font-size: 100px;">🎊</div>
+                <div class="shape" style="top: 70%; right: 10%; font-size: 80px;">🎉</div>
+                <div class="shape" style="top: 40%; right: 5%; font-size: 90px;">✨</div>
+                
+                <div class="greeting">
+                    Mời bạn đến dự lễ tốt nghiệp của tôi
+                </div>
+                
+                <div class="graduate-name">
+                    Lê Trường An
+                </div>
+                
+                <div class="details">
+                    <div class="detail-item">
+                        <div class="detail-icon">📅</div>
+                        <div class="detail-text">
+                            <span class="detail-label">Ngày</span>
+                            Thứ Sáu, 09 tháng 01 năm 2026
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">⏰</div>
+                        <div class="detail-text">
+                            <span class="detail-label">Thời Gian</span>
+                            9 giờ 30 phút sáng
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">📍</div>
+                        <div class="detail-text">
+                            <span class="detail-label">Địa Điểm</span>
+                            Hội trường HUTECH - Đại học Công nghệ TP.HCM<br>
+                            (Cơ sở Thủ Đức)
+                        </div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-icon">🗺️</div>
+                        <div class="detail-text">
+                            <span class="detail-label">Địa Chỉ</span>
+                            Khu Công nghệ cao XLHN, Hiệp Phú, Thủ Đức,<br>
+                            Thành phố Hồ Chí Minh, Việt Nam
+                            <br>
+                            <a href="https://maps.app.goo.gl/P5jiWHisU7QKEgQr7" target="_blank" class="map-button">
+                                <span>📍 Mở Google Maps</span>
+                            </a>
+                        </div>
+                    </div>
 
-            <div class="graduate-name">
-                Lê Trương An
+                    <div class="detail-item">
+                        <div class="detail-icon">📱</div>
+                        <div class="detail-text">
+                            <span class="detail-label">Liên Hệ</span>
+                            <a href="tel:+84374483942" class="phone-link">(+84) 37 448 3942</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="details">
-                <div class="detail-item">
-                    <div class="detail-icon">📅</div>
-                    <div>
-                        <span class="detail-label">Ngày</span>
-                        Thứ Năm, ngày 9 tháng 1 năm 2025
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-icon">⏰</div>
-                    <div>
-                        <span class="detail-label">Thời gian</span>
-                        9:30 sáng
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-icon">📍</div>
-                    <div>
-                        <span class="detail-label">Địa điểm</span>
-                        Hội trường HUTECH – Trường Đại học Công nghệ TP. Hồ Chí Minh<br>
-                        (Cơ sở Thủ Đức)
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-icon">🗺️</div>
-                    <div>
-                        <span class="detail-label">Địa chỉ</span>
-                        Khu Công Nghệ Cao, Phường Hiệp Phú, TP. Thủ Đức,<br>
-                        TP. Hồ Chí Minh
-                        <br>
-                        <a href="https://maps.app.goo.gl/P5jiWHisU7QKEgQr7" target="_blank" class="map-button">
-                            📍 Mở trên Google Maps
-                        </a>
-                    </div>
-                </div>
-
-                <div class="detail-item">
-                    <div class="detail-icon">📱</div>
-                    <div>
-                        <span class="detail-label">Liên hệ</span>
-                        <a href="tel:+84374483942">(+84) 37 448 3942</a>
-                    </div>
-                </div>
+            
+            <div class="footer">
+                Sự hiện diện của bạn là niềm vinh hạnh của tôi <span class="heart">💙</span>
             </div>
-        </div>
-
-        <div class="footer">
-            Sự hiện diện của bạn là niềm vinh hạnh lớn nhất của tôi 💙
         </div>
     </div>
-</div>
 
-<script>
-    const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.width = Math.random() * 8 + 3 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.animationDuration = Math.random() * 10 + 10 + 's';
-        particlesContainer.appendChild(particle);
-    }
+    <script>
+        // Create starfield
+        const starfield = document.getElementById('starfield');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 20 + 's';
+            star.style.animationDuration = Math.random() * 15 + 10 + 's';
+            starfield.appendChild(star);
+        }
 
-    const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.width = Math.random() * 3 + 1 + 'px';
-        star.style.height = star.style.width;
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 2 + 's';
-        starsContainer.appendChild(star);
-    }
-</script>
+        // Create confetti
+        const colors = ['#ff0080', '#ff8c00', '#40e0d0', '#ffd700', '#ff69b4', '#87ceeb'];
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 5 + 's';
+            confetti.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(confetti);
+        }
 
+        // Create fireworks
+        const fireworksContainer = document.body;
+        setInterval(() => {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = Math.random() * 100 + '%';
+            firework.style.top = Math.random() * 100 + '%';
+            firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+            firework.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            firework.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = firework.cloneNode();
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+                particle.style.setProperty('--ty', (Math.random() - 0.5) * 300 + 'px');
+                particle.style.animationDelay = Math.random() * 0.3 + 's';
+                fireworksContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }, 2000);
+
+        // Mouse parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.invitation-card');
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            const rotateX = (y / rect.height) * 10;
+            const rotateY = (x / rect.width) * 10;
+            
+            card.style.transform = `perspective(2000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale3d(1, 1, 1)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            const card = document.querySelector('.invitation-card');
+            card.style.transform = 'perspective(2000px) rotateX(0deg) rotateY(0deg)';
+        });
+    </script>
 </body>
 </html>
